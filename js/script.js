@@ -39,10 +39,40 @@ if (contatoForm) {
     });
 }
 
+// ==============================================================
+// 📸 LISTA DE FOTOS DO PORTFÓLIO
+// Para adicionar ou trocar fotos facilmente:
+// 1. Coloque a foto dentro da pasta "img"
+// 2. Adicione ou troque o nome do arquivo na lista abaixo:
+// ==============================================================
+const fotosPortfolio = [
+    "img/port1.jpg",
+    "img/port2.jpg",
+    "img/port3.jpg",
+    "img/port4.jpg",
+    "img/port5.jpg",
+    "img/port6.jpg",
+    "img/port7.jpg",
+    "img/port8.jpg",
+    "img/port9.jpg",
+    "img/port10.jpg",
+    "img/port11.jpg",
+    "img/port12.jpg"
+];
+
 // Carrossel de Portfólio
 const track = document.querySelector('.carousel-track');
 const prevBtn = document.querySelector('.prev-btn');
 const nextBtn = document.querySelector('.next-btn');
+
+// Monta as fotos dinamicamente a partir da lista
+if (track && typeof fotosPortfolio !== 'undefined' && fotosPortfolio.length > 0) {
+    track.innerHTML = fotosPortfolio.map((foto, index) => `
+        <div class="carousel-item">
+            <img src="${foto}" alt="Projeto ${index + 1}">
+        </div>
+    `).join('');
+}
 
 if (track && prevBtn && nextBtn) {
     const getScrollAmount = () => {
@@ -50,12 +80,30 @@ if (track && prevBtn && nextBtn) {
         return item ? item.offsetWidth + 20 : 300;
     };
 
+    const isAtEnd = () => {
+        return track.scrollLeft + track.clientWidth >= track.scrollWidth - 30;
+    };
+
+    const isAtStart = () => {
+        return track.scrollLeft <= 15;
+    };
+
     nextBtn.addEventListener('click', () => {
-        track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        if (isAtEnd()) {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        }
+        resetAutoPlay();
     });
 
     prevBtn.addEventListener('click', () => {
-        track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        if (isAtStart()) {
+            track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+        } else {
+            track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        }
+        resetAutoPlay();
     });
 
     // Avanço automático suave a cada 3.5 segundos
@@ -64,8 +112,7 @@ if (track && prevBtn && nextBtn) {
     const startAutoPlay = () => {
         stopAutoPlay();
         autoPlayInterval = setInterval(() => {
-            // Se chegou ao final, volta ao início suavemente
-            if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 20) {
+            if (isAtEnd()) {
                 track.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
                 track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
@@ -78,6 +125,11 @@ if (track && prevBtn && nextBtn) {
             clearInterval(autoPlayInterval);
             autoPlayInterval = null;
         }
+    };
+
+    const resetAutoPlay = () => {
+        stopAutoPlay();
+        startAutoPlay();
     };
 
     startAutoPlay();
