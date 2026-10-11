@@ -77,6 +77,10 @@ ul {
     border: none;
 }
 
+.btn i {
+    margin-right: 8px;
+}
+
 .btn-primary {
     background-color: var(--secondary-color);
     color: #333;

@@ -17,3 +17,24 @@ links.forEach(link => {
         }
     });
 });
+
+// Envio do Formulário de Contato para o WhatsApp
+const contatoForm = document.querySelector('.contato-form');
+if (contatoForm) {
+    contatoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nome = document.getElementById('nome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const mensagem = document.getElementById('mensagem').value.trim();
+
+        let texto = `*Novo Contato via Site S&D*\n\n`;
+        texto += `*Nome:* ${nome}\n`;
+        if (email) {
+            texto += `*E-mail:* ${email}\n`;
+        }
+        texto += `*Mensagem:* ${mensagem}`;
+
+        const url = `https://wa.me/5519997731516?text=${encodeURIComponent(texto)}`;
+        window.open(url, '_blank');
+    });
+}
