@@ -185,23 +185,106 @@ ul {
     color: var(--primary-color);
 }
 
-/* Portfólio */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+/* Portfólio Carrossel */
+.carousel-wrapper {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
-.gallery-item img {
+.carousel-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: 15px 5px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    flex: 0 0 calc((100% - 60px) / 4);
+    scroll-snap-align: start;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.carousel-item img {
     width: 100%;
     height: 250px;
     object-fit: cover;
     border-radius: 8px;
     transition: var(--transition);
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.gallery-item img:hover {
-    transform: scale(1.03);
+.carousel-item img:hover {
+    transform: scale(1.04);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 1.1rem;
+}
+
+.carousel-btn i {
+    margin: 0;
+}
+
+.carousel-btn:hover {
+    background: var(--secondary-color);
+    color: #333;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev-btn {
+    left: -22px;
+}
+
+.carousel-btn.next-btn {
+    right: -22px;
+}
+
+@media (max-width: 992px) {
+    .carousel-item {
+        flex: 0 0 calc((100% - 20px) / 2);
+    }
+}
+
+@media (max-width: 600px) {
+    .carousel-item {
+        flex: 0 0 85%;
+    }
+
+    .carousel-btn.prev-btn {
+        left: -10px;
+    }
+
+    .carousel-btn.next-btn {
+        right: -10px;
+    }
 }
 
 /* Contato */
